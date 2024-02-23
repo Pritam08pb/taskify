@@ -3,7 +3,7 @@ Taskify is a task management to-do app crafted with Flutter, a cross-platform fr
 # UI/UX
 <div style="display: flex;">
     <img src="https://github.com/Pritam08pb/AnoTalk/assets/99427618/26ac8634-5ee3-4b78-86ab-04396447af7f" alt="demo ss" width="214" height="446">
-    <hr>
+   <br>
     <img src="https://github.com/Pritam08pb/AnoTalk/assets/99427618/26ac8634-5ee3-4b78-86ab-04396447af7f" alt="demo ss" width="214" height="446">
 </div>
  
