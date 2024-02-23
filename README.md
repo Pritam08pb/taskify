@@ -2,7 +2,7 @@
 Taskify is a task management to-do app crafted with Flutter, a cross-platform framework. Users can organize tasks, create lists, set deadlines, and prioritize activities in an intuitive interface.
 # UI/UX
 <div style="display: flex;,gap:"10px";>
-    <img src="https://github.com/Pritam08pb/AnoTalk/assets/99427618/26ac8634-5ee3-4b78-86ab-04396447af7f" alt="demo ss" width="214" height="440">
-    <img src="https://github.com/Pritam08pb/AnoTalk/assets/99427618/26ac8634-5ee3-4b78-86ab-04396447af7f" alt="demo ss" width="214" height="440">
+    <img src="https://github.com/Pritam08pb/taskify/assets/99427618/1f4c60cb-a3fb-4bb4-b2c1-911a45e6704e" alt="demo ss" width="114" height="240">
+    <img src="https://github.com/Pritam08pb/taskify/assets/99427618/1349db28-8052-4f43-a7a7-df2efe89307a" alt="demo ss" width="114" height="240">
+    
 </div>
- 
