@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'AddTaskPage.dart';
 import 'task.dart';
+import 'DetailsPage.dart';
 // ignore: unused_import
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,28 +39,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Task> tasks = [];
+  List<Task> filteredTasks = [];
+  String currentTag = "All";
 
-  List<Task> filteredTasks = []; // Add a new list to hold filtered tasks
-  String currentTag = "All"; // Track the current tag selected
-
-
- @override
+  @override
   void initState() {
     super.initState();
-    // Assuming tasks are loaded from somewhere else, like SharedPreferences
-    // loadTasks();
-    tasks = []; // Initialize tasks list
-    filteredTasks = tasks; // Initialize filtered tasks list
+    tasks = [];
+    filteredTasks = tasks;
   }
 
-  // Method to filter tasks based on tag
+//Tag Filteration
   void filterTasksByTag(String tag) {
     setState(() {
-      currentTag = tag; // Update the current tag
+      currentTag = tag;
       if (tag == "All") {
-        filteredTasks = tasks; // Show all tasks if tag is "All"
+        filteredTasks = tasks;
       } else {
-        filteredTasks = tasks.where((task) => task.tag == tag).toList(); // Filter tasks by tag
+        filteredTasks = tasks.where((task) => task.tag == tag).toList();
       }
     });
   }
@@ -119,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
-                           filterTasksByTag("All");
+                            filterTasksByTag("All");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -141,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
-                           filterTasksByTag("Birthday");
+                            filterTasksByTag("Birthday");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -163,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                           filterTasksByTag("Work");
+                            filterTasksByTag("Work");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -183,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                           filterTasksByTag("Personal");
+                            filterTasksByTag("Personal");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -247,12 +244,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: const EdgeInsets.only(left: 16),
                             child: const Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 239, 221),
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    size: 32,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    'Delete',
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 255, 239, 221),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -261,24 +268,48 @@ class _MyHomePageState extends State<MyHomePage> {
                                 borderRadius: BorderRadius.zero),
                             elevation: 0.6,
                             color: const Color.fromARGB(255, 241, 227, 208),
-                            child: ListTile(
-                              title: Text(
-                                task.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "helvetica",
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                       DetailsPage(task: task),
+                                  ),
+                                );
+                              },
+
+                              // onTap: () => {
+                              //   Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => inside(
+                              //                 task: task,
+                              //               )))
+                              // },
+                             
+                              child: ListTile(
+                                title: Text(
+                                  task.name.toString().length >= 24
+                                      ? task.name.toString().substring(0, 24)
+                                      : task.name.toString(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "helvetica",
+                                  ),
                                 ),
-                              ),
-                              subtitle: Text(task.date.toString()),
-                              leading: Checkbox(
-                                checkColor:
-                                    const Color.fromARGB(255, 255, 255, 255),
-                                activeColor:
-                                    const Color.fromARGB(255, 250, 156, 73),
-                                value: task.isCompleted,
-                                onChanged: (value) {
-                                  toggleTaskCompletion(index);
-                                },
+                                subtitle:
+                                    Text(task.date.toString().substring(0, 16)),
+                                leading: Checkbox(
+                                  checkColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  activeColor:
+                                      const Color.fromARGB(255, 250, 156, 73),
+                                  value: task.isCompleted,
+                                  onChanged: (value) {
+                                    toggleTaskCompletion(index);
+                                  },
+                                ),
                               ),
                             ),
                           ),

@@ -4,7 +4,7 @@ import 'task.dart';
 class AddTaskPage extends StatefulWidget {
   final Function(Task) onTaskAdded;
 
-  const AddTaskPage({Key? key, required this.onTaskAdded}) : super(key: key);
+  const AddTaskPage({super.key, required this.onTaskAdded});
 
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
@@ -19,9 +19,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   void initState() {
     super.initState();
+    
     _selectedDate = DateTime.now();
     _selectedTag = "Work";
-    
+     _taskdescp = '';
   }
 
   @override
@@ -116,7 +117,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   
               maxLines: 4,
               onChanged: (value) {
-                _taskdescp = value;
+                 _taskdescp = value;
               },
             ),
             const SizedBox(height: 30.0),
@@ -135,6 +136,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     name: _taskName,
                     date: _selectedDate,
                     tag: _selectedTag,
+                     taskdescp: _taskdescp,
                   );
                   widget.onTaskAdded(newTask);
 
