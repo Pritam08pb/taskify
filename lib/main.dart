@@ -71,7 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
   // delete task
   void deleteTask(int index) {
     setState(() {
-      tasks.removeAt(index);
+      filteredTasks.removeAt(index);
+      if (tasks.isNotEmpty) {
+        tasks.removeAt(index);
+      }
     });
   }
 
@@ -274,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                       DetailsPage(task: task),
+                                        DetailsPage(task: task),
                                   ),
                                 );
                               },
@@ -287,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               //                 task: task,
                               //               )))
                               // },
-                             
+
                               child: ListTile(
                                 title: Text(
                                   task.name.toString().length >= 24
