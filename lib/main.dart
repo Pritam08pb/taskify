@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'AddTaskPage.dart';
 import 'task.dart';
+// ignore: unused_import
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +38,32 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Task> tasks = [];
+
+  List<Task> filteredTasks = []; // Add a new list to hold filtered tasks
+  String currentTag = "All"; // Track the current tag selected
+
+
+ @override
+  void initState() {
+    super.initState();
+    // Assuming tasks are loaded from somewhere else, like SharedPreferences
+    // loadTasks();
+    tasks = []; // Initialize tasks list
+    filteredTasks = tasks; // Initialize filtered tasks list
+  }
+
+  // Method to filter tasks based on tag
+  void filterTasksByTag(String tag) {
+    setState(() {
+      currentTag = tag; // Update the current tag
+      if (tag == "All") {
+        filteredTasks = tasks; // Show all tasks if tag is "All"
+      } else {
+        filteredTasks = tasks.where((task) => task.tag == tag).toList(); // Filter tasks by tag
+      }
+    });
+  }
+
   // adding task
   void addTask(Task task) {
     setState(() {
@@ -91,7 +119,29 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
-                            pressed();
+                           filterTasksByTag("All");
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 249, 200, 131),
+                            foregroundColor:
+                                const Color.fromARGB(255, 68, 69, 69),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            minimumSize: const Size(10, 30),
+                          ),
+                          child: const Text(
+                            "All",
+                            style: TextStyle(
+                                fontFamily: "helvetica",
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                           filterTasksByTag("Birthday");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -113,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            pressed();
+                           filterTasksByTag("Work");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -133,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            pressed();
+                           filterTasksByTag("Personal");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -153,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         const SizedBox(width: 12),
                         ElevatedButton(
                           onPressed: () {
-                            pressed();
+                            filterTasksByTag("Wishlist");
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -178,14 +228,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 Flexible(
                   flex: 8,
                   child: ListView.builder(
-                    itemCount: tasks.length,
+                    itemCount: filteredTasks.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (tasks.isEmpty) {
+                      if (filteredTasks.isEmpty) {
                         return const Center(
                           child: Text('No tasks available'),
                         );
                       } else {
-                        final task = tasks[index];
+                        final task = filteredTasks[index];
                         return Dismissible(
                           key: Key(task.name),
                           direction: DismissDirection.startToEnd,
@@ -207,10 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           child: Card(
-
-                            shape:const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.zero),
                             elevation: 0.6,
-                            color: const Color.fromARGB(255, 241, 227, 208) ,
+                            color: const Color.fromARGB(255, 241, 227, 208),
                             child: ListTile(
                               title: Text(
                                 task.name,

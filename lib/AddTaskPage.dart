@@ -14,12 +14,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late String _taskName;
   late DateTime _selectedDate;
   late String _selectedTag;
+  late  String _taskdescp;
 
   @override
   void initState() {
     super.initState();
     _selectedDate = DateTime.now();
     _selectedTag = "Work";
+    
   }
 
   @override
@@ -114,7 +116,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   
               maxLines: 4,
               onChanged: (value) {
-                _taskName = value;
+                _taskdescp = value;
               },
             ),
             const SizedBox(height: 30.0),
