@@ -36,7 +36,7 @@ class DetailsPage extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Tag: ${task.tag}',
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)
                     ),
                   ),
                 ),
@@ -45,7 +45,7 @@ class DetailsPage extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               'Date: ${task.date.toString().substring(0, 16)}',
-              style:const TextStyle(fontSize: 16),
+              style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
             Center(
