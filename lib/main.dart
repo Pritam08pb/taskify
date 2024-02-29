@@ -41,12 +41,44 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Task> tasks = [];
   List<Task> filteredTasks = [];
   String currentTag = "All";
+  late SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
+    _initializeSharedPreferences();
+    super.initState();
     tasks = [];
     filteredTasks = tasks;
+  }
+
+  Future<void> _initializeSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _loadTasks();
+  }
+
+  void _loadTasks() {
+    List<String>? tasksJson = _prefs.getStringList('tasks');
+    if (tasksJson != null) {
+      setState(() {
+        tasks =
+            tasksJson.map((taskJson) => Task.fromJsonString(taskJson)).toList();
+        filteredTasks = tasks;
+      });
+    }
+  }
+
+  Future<void> _saveTasks() async {
+  List<String> tasksJson = tasks.map((task) => task.toJsonString()).toList();
+  await _prefs.setStringList('tasks', tasksJson);
+}
+
+
+  void addTask(Task task) {
+    setState(() {
+      tasks.add(task);
+      _saveTasks();
+    });
   }
 
 //Tag Filteration
@@ -61,32 +93,30 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // adding task
-  void addTask(Task task) {
-    setState(() {
-      tasks.add(task);
-    });
-  }
-
   // delete task
-void deleteTask(Task task) {
-  setState(() {
-    filteredTasks.remove(task);
-  });
-}
+  // void deleteTask(Task task) {
+  //   setState(() {
+  //     filteredTasks.remove(task);
+  //   });
+  // }
 
-void delete(int index) {
+  void delete(int index) {
   setState(() {
     if (index >= 0 && index < tasks.length) {
-      tasks.removeAt(index);
+      Task deletedTask = tasks.removeAt(index);
+      filteredTasks.remove(deletedTask); 
+      _saveTasks(); 
     }
   });
 }
+
+
 
   //task completion
   void toggleTaskCompletion(int index) {
     setState(() {
       tasks[index].isCompleted = !tasks[index].isCompleted;
+      _saveTasks();
     });
   }
 
@@ -246,7 +276,7 @@ void delete(int index) {
                           direction: DismissDirection.startToEnd,
                           onDismissed: (direction) {
                             delete(index);
-                            deleteTask(task);
+                            // deleteTask(task);
                           },
                           background: Container(
                             color: const Color.fromARGB(255, 250, 156, 73),
