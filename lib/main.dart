@@ -69,15 +69,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _saveTasks() async {
-  List<String> tasksJson = tasks.map((task) => task.toJsonString()).toList();
-  await _prefs.setStringList('tasks', tasksJson);
-}
-
+    List<String> tasksJson = tasks.map((task) => task.toJsonString()).toList();
+    await _prefs.setStringList('tasks', tasksJson);
+  }
 
   void addTask(Task task) {
     setState(() {
       tasks.add(task);
       _saveTasks();
+      setState(() {});
     });
   }
 
@@ -94,28 +94,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // delete task
-  // void deleteTask(Task task) {
-  //   setState(() {
-  //     filteredTasks.remove(task);
-  //   });
-  // }
 
   void delete(int index) {
-  setState(() {
-    if (index >= 0 && index < tasks.length) {
-      Task deletedTask = tasks.removeAt(index);
-      filteredTasks.remove(deletedTask); 
-      _saveTasks(); 
-    }
-  });
-}
-
-
+    setState(() {
+      if (index >= 0 && index < tasks.length) {
+        Task deletedTask = filteredTasks.removeAt(index);
+        tasks.remove(deletedTask);
+        _saveTasks();
+        setState(() {});
+      }
+    });
+  }
 
   //task completion
   void toggleTaskCompletion(int index) {
     setState(() {
-      tasks[index].isCompleted = !tasks[index].isCompleted;
+      if (currentTag != 'All') {
+        filteredTasks[index].isCompleted = !filteredTasks[index].isCompleted;
+      } else {
+        tasks[index].isCompleted = !tasks[index].isCompleted;
+      }
       _saveTasks();
     });
   }
@@ -131,6 +129,32 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title, style: const TextStyle(fontFamily: "biocat")),
+        actions: [
+          PopupMenuButton<String>(
+            color: Color.fromARGB(255, 249, 200, 131),
+            onSelected: (value) {
+              if (value == 'clear') {
+                _clearAllCache();
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  height: 20,
+                  value: 'clear',
+                  child: Center(
+                      child: const Text(
+                    'Clear All',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Color.fromARGB(255, 54, 53, 53),
+                    ),
+                  )),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -276,7 +300,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           direction: DismissDirection.startToEnd,
                           onDismissed: (direction) {
                             delete(index);
-                            // deleteTask(task);
                           },
                           background: Container(
                             color: const Color.fromARGB(255, 250, 156, 73),
@@ -386,5 +409,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  void _clearAllCache() async {
+    await _prefs.clear();
+    setState(() {
+      tasks.clear();
+      filteredTasks.clear();
+    });
   }
 }

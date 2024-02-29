@@ -11,7 +11,7 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  late String _taskName;
+  late String _taskName =" ";
   late DateTime _selectedDate;
   late String _selectedTag;
   late  String _taskdescp;
