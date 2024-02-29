@@ -69,14 +69,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // delete task
-  void deleteTask(int index) {
-    setState(() {
-      filteredTasks.removeAt(index);
-      if (tasks.isNotEmpty) {
-        tasks.removeAt(index);
-      }
-    });
-  }
+void deleteTask(Task task) {
+  setState(() {
+    filteredTasks.remove(task);
+  });
+}
+
+void delete(int index) {
+  setState(() {
+    if (index >= 0 && index < tasks.length) {
+      tasks.removeAt(index);
+    }
+  });
+}
 
   //task completion
   void toggleTaskCompletion(int index) {
@@ -240,7 +245,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           key: Key(task.name),
                           direction: DismissDirection.startToEnd,
                           onDismissed: (direction) {
-                            deleteTask(index);
+                            delete(index);
+                            deleteTask(task);
                           },
                           background: Container(
                             color: const Color.fromARGB(255, 250, 156, 73),
