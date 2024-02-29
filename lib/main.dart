@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 1, 119, 255)),
         useMaterial3: true,
       ),
-      home:SplashScreen()  ,
+      home: SplashScreen(),
     );
   }
 }
@@ -78,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void addTask(Task task) {
     setState(() {
       tasks.add(task);
+      filteredTasks.add(task);
       _saveTasks();
       setState(() {});
     });

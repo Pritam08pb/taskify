@@ -141,6 +141,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   widget.onTaskAdded(newTask);
 
                   Navigator.pop(context);
+                
                 },
                 child: const Text('Add Task'),
               ),
