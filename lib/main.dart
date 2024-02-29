@@ -5,6 +5,8 @@ import 'DetailsPage.dart';
 // ignore: unused_import
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'SplashScreen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 1, 119, 255)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Taskify'),
+      home:SplashScreen()  ,
     );
   }
 }
