@@ -78,7 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void addTask(Task task) {
     setState(() {
       tasks.add(task);
-      filteredTasks.add(task);
+      if(currentTag !='All'){
+      filteredTasks.add(task);}
       _saveTasks();
       setState(() {});
     });
@@ -289,7 +290,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Flexible(
                   flex: 8,
-                  child: ListView.builder(
+                  child:filteredTasks.isEmpty ? Center(child: Container(width: 150,child: Opacity(opacity: 0.4,
+                  child: Image(image: AssetImage('assets/images/logo.png'),)))) :
+                  
+                   ListView.builder(
                     itemCount: filteredTasks.length,
                     itemBuilder: (BuildContext context, int index) {
                       if (filteredTasks.isEmpty) {
